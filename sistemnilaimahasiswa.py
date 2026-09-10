@@ -1,33 +1,52 @@
-#Sistem Penilaian Mahasiswa
+#Program Menghitung Nilai Rata-Rata Mahasiswa dalam Satu Semester
 
-#variabel
-nama = input("Masukan nama mahasiswa : ")
-nim = int(input("Masukan NIM mahasiswa : "))
+def hitung_rata_rata_nilai_mahasiswa(nilai: list[float]) -> float:
+   return sum(nilai) / 3
 
-#nilai
-nilai_UTS = float(input("Masukan nilai UTS : "))
-nilai_UAS = float(input("Masukan nilai UAS : "))
-nilai_harian = float(input("masukan nilai harian : "))
 
-if (nilai_UTS < 0 or nilai_UTS >100 ) or \
-   (nilai_UAS < 0 or nilai_UAS >100 ) or \
-   (nilai_harian < 0 or nilai_harian >100):
-    print("nilai harus dalam rentang 0 - 100")
-    exit()
+def validasi_dan_input_nilai(jenis_nilai: str) -> float:
+   while True:
+      try:
+         nilai: float = float(input(F"Masukan nilai {jenis_nilai} dengan rentang 1 - 100 : "))
+   
+         if (nilai < 0 or nilai > 100):
+            print("Mohon memasukan nilai dengan rentang yang telah disesuaikan!.\nSilahkan coba lagi!")
+         else:
+            print("Nilai berhasil dimasukan!")
+            return nilai
+            
+      except ValueError:
+         print("Terjadi error, nilai yang dimasukan bukan sebuah angka!.\nSilahkan coba lagi!")
 
-#Gatau nama bagian ini
-rata_rata = (nilai_UTS + nilai_UAS + nilai_harian) / 3
-print (rata_rata) 
-if rata_rata >= 80 :
-    grade = "A"
-elif rata_rata >= 75 :
-    grade = "-A"
-elif rata_rata >= 65 :
-    grade = "B"
-elif rata_rata >= 60 :
-    grade = "C"
-else:
-    grade = "Kamu tidak lulus"
 
-print (grade)
+def main() -> None:
+   #variabel
+   nama: str = input("Masukan nama mahasiswa : ").title()
+   nim: str = input("Masukan NIM mahasiswa : ")
+   
+   #Proses input nilai
+   nilai_nilai: list[float] = []
 
+   for jenis_nilai in ("Harian", "UTS", "UAS"):
+      nilai: float = validasi_dan_input_nilai(jenis_nilai)
+      nilai_nilai.append(nilai)
+         
+   #Proses menghitung nilai rata_rata mahasiswa dari nilai harian, UTS, dan UAS
+   rata_rata = hitung_rata_rata_nilai_mahasiswa(nilai_nilai) 
+   print(F"Rata-rata nilai mahasiswa bernama \"{nama}\" dengan NIM \"{nim}\" adalah {rata_rata}")
+   
+   if rata_rata >= 80 :
+       kategori_nilai = "A"
+   elif rata_rata >= 75 :
+       kategori_nilai = "-A"
+   elif rata_rata >= 65 :
+       kategori_nilai = "B"
+   elif rata_rata >= 60 :
+       kategori_nilai = "C"
+   else:
+       kategori_nilai = "Tidak lulus!"
+   
+   print(F"Kategori nilai anda: {kategori_nilai}")
+
+if __name__ == "__main__":
+   main()
